@@ -21,23 +21,29 @@ jobs:
       run: |
         # This assumes your book is in the root of your repository.
         # Just add a `cd` here if you need to change to another directory.
+        ls -l
+        echo "ls 1 completed. pwd:$PWD"
         cd book
         mdbook build
-        echo "mdbook build completed."
+        ls -l
+        echo "ls 2 completed. pwd:$PWD"
+        echo "mdbook build completed. pwd:$PWD"
         git worktree add gh-pages
-        echo "worktree add gh-page completed."
+        echo "worktree add gh-page completed. pwd:$PWD"
         git config user.name "Deploy from CI"
         git config user.email ""
-        echo "git config completed."
+        echo "git config completed. pwd:$PWD"
+        ls -l
+        echo "ls 3 completed. pwd:$PWD"
         cd gh-pages
         # Delete the ref to avoid keeping history.
         git update-ref -d refs/heads/gh-pages
-        echo "git update-ref completed."
+        echo "git update-ref completed. pwd:$PWD"
         ls -l
-        echo "ls completed."
+        echo "ls 4 completed. pwd:$PWD"
         rm -rf *
         mv ../book/* .
-        echo "git mv completed pwd $PWD."
+        echo "git mv completed. pwd:$PWD"
         git add .
         git commit -m "Deploy $GITHUB_SHA to gh-pages"
         echo "git commit completed."
