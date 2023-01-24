@@ -1,9 +1,8 @@
-name: Deploy
+name: Rust By Github Pages Deploy
 on:
   push:
     branches:
       - master
-      - wip-repo-init
 
 jobs:
   deploy:
@@ -15,35 +14,28 @@ jobs:
     - name: Install mdbook
       run: |
         mkdir mdbook
-        curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.14/mdbook-v0.4.14-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
+        MDBOOK_VERSION=v0.4.25
+        curl -sSL https://github.com/rust-lang/mdBook/releases/download/${MDBOOK_VERSION}/mdbook-${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
         echo `pwd`/mdbook >> $GITHUB_PATH
     - name: Deploy GitHub Pages
       run: |
         # This assumes your book is in the root of your repository.
         # Just add a `cd` here if you need to change to another directory.
-        ls -l
-        echo "ls 1 completed. pwd:$PWD"
         cd book
         mdbook build
-        ls -l
-        echo "ls 2 completed. pwd:$PWD"
-        echo "mdbook build completed. pwd:$PWD"
+        echo "mdbook build completed."
         git worktree add gh-pages
-        echo "worktree add gh-page completed. pwd:$PWD"
+        echo "worktree add gh-page completed."
         git config user.name "Deploy from CI"
         git config user.email ""
-        echo "git config completed. pwd:$PWD"
-        ls -l
-        echo "ls 3 completed. pwd:$PWD"
+        echo "git config completed."
         cd gh-pages
         # Delete the ref to avoid keeping history.
         git update-ref -d refs/heads/gh-pages
-        echo "git update-ref completed. pwd:$PWD"
-        ls -l
-        echo "ls 4 completed. pwd:$PWD"
+        echo "git update-ref completed."
         rm -rf *
         mv ../book/* .
-        echo "git mv completed. pwd:$PWD"
+        echo "git mv completed."
         git add .
         git commit -m "Deploy $GITHUB_SHA to gh-pages"
         echo "git commit completed."
