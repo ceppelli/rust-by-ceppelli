@@ -2,7 +2,7 @@ name: Rust By Ceppelli Github Pages Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
