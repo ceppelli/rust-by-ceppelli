@@ -23,12 +23,16 @@ jobs:
         # Just add a `cd` here if you need to change to another directory.
         cd book
         mdbook build
+        echo "mdbook build completed."
         git worktree add gh-pages
+        echo "worktree add gh-page completed."
         git config user.name "Deploy from CI"
         git config user.email ""
+        echo "git config completed."
         cd gh-pages
         # Delete the ref to avoid keeping history.
         git update-ref -d refs/heads/gh-pages
+        echo "git update-ref completed."
         rm -rf *
         mv ../book/* .
         git add .
