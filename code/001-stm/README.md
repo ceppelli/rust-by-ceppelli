@@ -1,6 +1,6 @@
-# rust-by-ceppelli
+# Rust by Ceppelli rust-by-ceppelli
+## chapter 001
 
-## chapter 001 stm
 
 [back](../README.md)
 
