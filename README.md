@@ -1,7 +1,7 @@
 # Rust By Ceppelli
 Thoughts, ideas, prototypes with Rust language.
 
-![The Rust Logo](assets/rust-logo-blk.svg)
+![Rust By Ceppelli Logo](assets/rust-by-ceppelli-128x128.png)
 
 ## The Book
 

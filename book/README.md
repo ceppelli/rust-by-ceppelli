@@ -1,7 +1,7 @@
 # Rust By Ceppelli Book
 Thoughts, ideas, prototypes with Rust language.
 
-![The Rust Logo](src/assets/rust-logo-blk.svg)
+![Rust By Ceppelli Logo](src/assets/rust-by-ceppelli-128x128.png)
 
 This folder contains the source code of the mbbook
 
@@ -13,7 +13,7 @@ to read it online.
 If you'd like to read it locally, [install Rust], and then:
 
 ```bash
-$ git clone https://github.com/rust-lang/rust-by-ceppelli
+$ git clone https://github.com/ceppelli/rust-by-ceppelli
 $ cd rust-by-ceppelli/book
 $ cargo install mdbook
 $ mdbook build
