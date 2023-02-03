@@ -1,6 +1,6 @@
 # Implementing a basic STM
 
-[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/001-stm/src/basic_stm.rs)
+[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/basic_stm.rs)
 
 This first rough attempt is a simple starting point just to have something to resoning about.
 
@@ -165,4 +165,4 @@ stm.on_event(KeyEvent{key_code:'e'});
 As first attempt this code carries different problems which will discuss and workaround in the next sections.
 
 
-[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/001-stm/src/basic_stm.rs)
+[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/basic_stm.rs)

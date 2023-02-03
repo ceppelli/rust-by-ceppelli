@@ -1,6 +1,6 @@
 # Improving the basic STM
 
-[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/001-stm/src/improved_basic_stm.rs)
+[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/improved_basic_stm.rs)
 
 In this section we discuss some problems with the previous implementation and try to fix some of them.
 
@@ -135,4 +135,4 @@ If the return value of **self.state.on_event(event)** is not **None** the local 
 Finally, in case the pair **(current_state, event)** is not matched the STM current state will be set to **Unknown**.
 
 
-[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/001-stm/src/improved_basic_stm.rs)
+[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/improved_basic_stm.rs)
