@@ -3,6 +3,33 @@
 
 ## chapter 001
 
+### run simple stm
+
+```bash
+$ cargo run --bin stm_01
+
+```
+
+### run improved stm
+
+```bash
+$ cargo run --bin stm_02
+
+```
+
+### run fixed improved stm
+
+```bash
+$ cargo run --bin stm_03
+
+```
+
+### run performance tests
+
+```bash
+$ cargo run --bin stm_perf
+
+```
 
 [back](../README.md)
 

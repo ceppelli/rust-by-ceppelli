@@ -1,6 +1,6 @@
 # Improving the basic STM
 
-[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/improved_basic_stm.rs)
+[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/stm_02_improved.rs)
 
 In this section we discuss some problems with the previous implementation and try to fix some of them.
 
@@ -68,7 +68,7 @@ the **ProcessingState** accepts only **KeyEvents** with one of those **key_code*
 As second improvement the **ConsumeEvent** trait has been updated by adding to the **on_event** method the return value **Option<States>**. The return value if not **None** rappresents the state in which the STM will transition to.
 
 ```rust,noplayground
-pub trait ConsumeEvent {
+trait ConsumeEvent {
   fn on_event(&mut self, event:Event) -> Option<States> {
     None
   }
@@ -135,4 +135,4 @@ If the return value of **self.state.on_event(event)** is not **None** the local 
 Finally, in case the pair **(current_state, event)** is not matched the STM current state will be set to **Unknown**.
 
 
-[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/improved_basic_stm.rs)
+[Source Code](https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/stm_02_improved.rs)
