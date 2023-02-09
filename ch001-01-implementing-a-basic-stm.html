@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Implementing a basic STM - Rust By Ceppelli</title>
+
+
+        <!-- Custom HTML head -->
+        <script data-goatcounter="https://ceppelli.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+        <meta name="description" content="Rust by Ceppelli is a collection of Rust concepts and runnable examples.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item affix "><a href="title-page.html">The Rust By Ceppelli Book</a></li><li class="chapter-item expanded "><a href="ch001-00-stm-introduction.html"><strong aria-hidden="true">1.</strong> State Machine Introduction</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="ch001-01-implementing-a-basic-stm.html" class="active"><strong aria-hidden="true">1.1.</strong> Implementing a basic STM</a></li><li class="chapter-item "><a href="ch001-02-improving-the-basic-stm.html"><strong aria-hidden="true">1.2.</strong> Improving the basic STM</a></li><li class="chapter-item "><a href="ch001-03-fixing-the-improved-stm.html"><strong aria-hidden="true">1.3.</strong> Fixing the improved STM</a></li><li class="chapter-item "><a href="ch001-04-benchmarking.html"><strong aria-hidden="true">1.4.</strong> Performance benchmarking</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust By Ceppelli</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/ceppelli/rust-by-ceppelli" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="implementing-a-basic-stm"><a class="header" href="#implementing-a-basic-stm">Implementing a basic STM</a></h1>
+<p><a href="https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/stm_01_basic.rs">Source Code</a></p>
+<p>This first rough attempt is a simple starting point just to have something to resoning about.</p>
+<p>Let's define 2 events:</p>
+<pre><code class="language-rust noplayground">pub enum Event {
+  ResetEvent,
+  KeyEvent{key_code:char}
+}</code></pre>
+<p>The <strong>ResetEvent</strong> is for resetting the STM and the <strong>KeyEvent</strong> represents a generic key stroke.</p>
+<p>The STM consists of 5 states:</p>
+<pre><code class="language-rust noplayground">pub struct UnknownState;
+pub struct BeginState;
+pub struct HomeState {
+  counter: u32,
+}
+pub struct ProcessingState {
+  counter: u32,
+}
+pub struct EndState;
+</code></pre>
+<p>The behaviors and rules that will be implemented:</p>
+<ul>
+<li>the <strong>UnknownState</strong> represents an indeterminate condition</li>
+<li>the <strong>ResetEvent</strong> will force the STM state to <strong>BeginState</strong></li>
+<li>the KeyCode 'h' will transition to the <strong>HomeState</strong></li>
+<li>the KeyCode 'p' will transition to the <strong>ProcessingState</strong></li>
+<li>the KeyCode 'i' will increment the counter in both <strong>HomeState</strong> and <strong>ProcessingState</strong> states</li>
+<li>the KeyCode 'e' will transition to the <strong>EndState</strong></li>
+</ul>
+<p>Now let's define a trait for consuming the events</p>
+<pre><code class="language-rust noplayground">pub trait ConsumeEvent {
+  fn on_event(&amp;mut self, event:Event) {
+  }
+}
+</code></pre>
+<p>and write the states implementation</p>
+<pre><code class="language-rust noplayground">impl ConsumeEvent for UnknownState{}
+
+impl ConsumeEvent for BeginState {}
+
+impl ConsumeEvent for HomeState {
+  fn on_event(&amp;mut self, event:Event) {
+    match event {
+      Event::KeyEvent{key_code:'i'} =&gt; {
+        self.counter += 1;
+      },
+      _ =&gt; {}
+    }
+  }
+}
+
+impl ConsumeEvent for ProcessingState {
+  fn on_event(&amp;mut self, event:Event) {
+    match event {
+      Event::KeyEvent{key_code:'i'} =&gt; {
+        self.counter += 1;
+      },
+      _ =&gt; {}
+    }
+
+    counter);
+  }
+}
+
+impl ConsumeEvent for EndState {}</code></pre>
+<p>Let's define the STM data structure. The current state is allocated on the heap and uniquely owned by the current_state pointer.</p>
+<pre><code class="language-rust noplayground">pub struct STM&lt;'a&gt; {
+  pub name:&amp;'a str,
+  pub current_state:Box&lt;dyn ConsumeEvent&gt;,
+}
+
+impl STM&lt;'_&gt; {
+  pub fn new&lt;'a&gt;(name:&amp;'a str) -&gt; STM&lt;'a&gt; {
+    STM {
+      name:name,
+      current_state:Box::new(UnknownState),
+    }
+  }
+}
+</code></pre>
+<p>The implementation of the <strong>ConsumeEvent</strong> trait for the STM contains a simple logic for transitioning between states. Also is responsible for fowwargind the event the the current state.</p>
+<pre><code class="language-rust noplayground">impl ConsumeEvent for STM&lt;'_&gt; {
+  fn on_event(&amp;mut self, event:Event) {
+
+    // forward the event
+    self.current_state.on_event(event.clone());
+
+    match event {
+      Event::ResetEvent =&gt; {
+        self.current_state = Box::new(BeginState);
+      },
+      Event::KeyEvent {key_code: 'h' } =&gt; {
+        self.current_state = Box::new(HomeState::default());
+      },
+      Event::KeyEvent {key_code: 'p' } =&gt; {
+        self.current_state = Box::new(ProcessingState::default());
+      },
+      Event::KeyEvent {key_code: 'e' } =&gt; {
+        self.current_state = Box::new(EndState);
+      },
+      Event::KeyEvent { key_code: 'i' } =&gt; {},
+      _ =&gt; {
+        self.current_state = Box::new(UnknownState);
+      }
+    }
+  }
+}
+</code></pre>
+<p>Below is an example of how to interact with the STM.</p>
+<pre><code class="language-rust noplayground">let mut stm = STM::new(&quot;my_stm&quot;);
+
+// to Begin State
+stm.on_event(ResetEvent);
+
+// to Home State
+stm.on_event(KeyEvent{key_code:'h'});
+stm.on_event(KeyEvent{key_code:'i'});
+stm.on_event(KeyEvent{key_code:'i'});
+
+// to Processing State
+stm.on_event(KeyEvent{key_code:'p'});
+stm.on_event(KeyEvent{key_code:'i'});
+stm.on_event(KeyEvent{key_code:'i'});
+
+// to Home State
+stm.on_event(KeyEvent{key_code:'h'});
+stm.on_event(KeyEvent{key_code:'i'});
+stm.on_event(KeyEvent{key_code:'i'});
+
+// to End State
+stm.on_event(KeyEvent{key_code:'e'});
+</code></pre>
+<p>As first attempt this code carries different problems which will discuss and workaround in the next sections.</p>
+<p><a href="https://github.com/ceppelli/rust-by-ceppelli/blob/main/code/ch001/src/stm_01_basic.rs">Source Code</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="ch001-00-stm-introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="ch001-02-improving-the-basic-stm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="ch001-00-stm-introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="ch001-02-improving-the-basic-stm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace.js"></script>
+        <script src="editor.js"></script>
+        <script src="mode-rust.js"></script>
+        <script src="theme-dawn.js"></script>
+        <script src="theme-tomorrow_night.js"></script>
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
